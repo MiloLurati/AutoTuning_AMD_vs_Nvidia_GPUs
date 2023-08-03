@@ -29,3 +29,28 @@ python run_experiments.py
 ```
 
 In ```run_experiments.py``` by default, there are two lines of code commented out. These lines process the cache files and compute and analyze the FFGs. As these results are included by default in the repository, ```run_experiments.py``` will only plot the violin plots and centrality plots and calculate the statistical values of the search spaces.
+
+## Plot pagerank centralities
+
+To plot FFGs proportion of PageRank centralities run:
+```
+python plot_centralities.py
+```
+
+## Creating and plotting FFGs (Figure 6)
+
+To create new FFGs, run:
+```
+python compute_and_analyze_FFGs.py
+```
+
+By default, the script creates the FFG and computes the PageRank centralities (and saves them). By uncommenting line 180, the script will also draw the graph using networkX and save it as PDF. **NOTE:** Plotting FFGs is very expensive and may take a lot of RAM and time to plot.
+
+## Plot violins and calculate search space statistical values
+
+To plot the violins and calculate the statistical values run:
+```
+python violins.py <kernel name>
+```
+
+Give kernel name as argument (convolution, hotspot, dedisp). For example ```python violins.py convolution```.
