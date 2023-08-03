@@ -37,7 +37,7 @@ To plot FFGs proportion of PageRank centralities run:
 python plot_centralities.py
 ```
 
-## Creating and plotting FFGs (Figure 6)
+## Creating and plotting FFGs
 
 To create new FFGs, run:
 ```
