@@ -2,6 +2,8 @@
 
 This repository contains the cached GPU tuning data, the Python plotting scripts, and the kernels and kernel scripts for the paper "Comparing the Impact & Difficulty of Auto-Tuning on AMD and Nvidia GPUs" by Milo Lurati and Ben van Werkhoven.
 
+The data for all experiments is stored as JSON files where the filenames indicate the GPU model and kernel that was run. The original scripts used to generate the data can be found in ```cache_scipts```. In these scripts the exact search space for the parameters can be easily found.
+
 ## Installation
 
 The code makes use of the [BlooPy](https://github.com/schoonhovenrichard/BlooPy) Python package. Please ensure the latest version is installed.
