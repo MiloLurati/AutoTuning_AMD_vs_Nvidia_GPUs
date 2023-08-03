@@ -4,7 +4,7 @@ This repository contains the cached GPU tuning data and the Python plotting scri
 
 ## Installation
 
-The survey and benchmarking makes use of the [BlooPy](https://github.com/schoonhovenrichard/BlooPy) Python package. Please ensure the latest version is installed.
+The code makes use of the [BlooPy](https://github.com/schoonhovenrichard/BlooPy) Python package. Please ensure the latest version is installed.
 
 ```
 pip install bloopy
