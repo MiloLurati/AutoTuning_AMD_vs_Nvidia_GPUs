@@ -82,8 +82,8 @@ if __name__ == "__main__":
 
     arg1 = sys.argv[1]
 
-    if arg1 not in ("a100", "a4000", "mi50", "w6600"):
-        print("argv[1] not valid, specify a100 or a4000 or mi50 or w6600")
+    if arg1 not in ("a100", "a4000", "mi50", "w6600", "mi250"):
+        print("argv[1] not valid, specify a100 or a4000 or mi50 or w6600 or mi250")
         exit()
 
     w = h = 4096
