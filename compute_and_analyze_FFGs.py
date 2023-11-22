@@ -29,6 +29,7 @@ def compute_and_analyze():
 
     convolution_files = [
         'convolution_MI50_processed.json',
+        'convolution_MI250_processed.json',
         'convolution_W6600_processed.json',
         'convolution_A4000_processed.json',
         'convolution_A100_processed.json'
@@ -36,6 +37,7 @@ def compute_and_analyze():
 
     hotspot_files = [
         'hotspot_MI50_processed.json',
+        'hotspot_MI250_processed.json',
         'hotspot_W6600_processed.json',
         'hotspot_A4000_processed.json',
         'hotspot_A100_processed.json'
@@ -43,6 +45,7 @@ def compute_and_analyze():
 
     dedisp_files = [
         'dedisp_MI50_processed.json',
+        'dedisp_MI250_processed.json',
         'dedisp_W6600_processed.json',
         'dedisp_A4000_processed.json',
         'dedisp_A100_processed.json'
