@@ -192,6 +192,8 @@ def tune(device):
 
     cache_file = f"hotspot_{device}_cache.json"
 
+    lang = "HIP"
+
     # call the tuner
     results, env = kt.tune_kernel("calculate_temp", kernel_file, problem_size, args, tune_params, iterations=32,
                                   metrics=metrics, grid_div_x=grid_div_x, grid_div_y=grid_div_y, cache=cache_file,
