@@ -14,7 +14,7 @@ def process():
     FJ_files = ['convolution_A100_FJ.json']
 
     convolution_files = [
-        'convolution_MI250.json',
+        'convolution_MI250X.json',
         'convolution_MI50.json',
         'convolution_W6600.json',
         'convolution_A4000.json',
@@ -22,7 +22,7 @@ def process():
     ]
 
     hotspot_files = [
-        'hotspot_MI250.json',
+        'hotspot_MI250X.json',
         'hotspot_MI50.json',
         'hotspot_W6600.json',
         'hotspot_A4000.json',
@@ -30,7 +30,7 @@ def process():
     ]
 
     dedisp_files = [
-        'dedisp_MI250.json',
+        'dedisp_MI250X.json',
         'dedisp_MI50.json',
         'dedisp_W6600.json',
         'dedisp_A4000.json',
