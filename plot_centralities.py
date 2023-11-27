@@ -12,7 +12,7 @@ def plot():
     pth = 'AutoTuning_AMD_vs_Nvidia_GPUs/FFG_data/'
     experiment_dir = root_dir + pth #+ 'bounded_pagerank_centrality/'
     
-    GPUs = ["MI250", "W6600", "A4000", "A100"]
+    GPUs = ["MI250X", "W6600", "A4000", "A100"]
 
     for kernel in ("convolution", "hotspot", "dedisp"):
         print(f"Plotting {kernel} centralities")
@@ -26,11 +26,13 @@ def plot():
                 continue
             if kernel not in raw:
                 continue
+            if "MI50" in raw:
+                continue
 
             # Find GPU
             gpu = None
-            if "MI50" in raw:
-                gpu = "MI50"
+            if "MI250X" in raw:
+                gpu = "MI250X"
             else:
                 gpu = "_".join(raw[5:-1])
             if gpu is None:
@@ -72,21 +74,21 @@ def plot():
         ## DEFINE COLOUR PALETTE:
         palette ={
                 #"MI50": (0.2980392156862745, 0.4470588235294118, 0.6901960784313725),
-                "MI250": (0.2980392156862745, 0.4470588235294118, 0.6901960784313725),
+                "MI250X": (0.2980392156862745, 0.4470588235294118, 0.6901960784313725),
                 "W6600": (0.2980392156862745, 0.4470588235294118, 0.6901960784313725),
                 "A4000": (0.7686274509803922, 0.3058823529411765, 0.3215686274509804),
                 "A100": (0.7686274509803922, 0.3058823529411765, 0.3215686274509804)
                 }
         markers = {
                 #"MI50": "<",
-                "MI250": "<",
+                "MI250X": "<",
                 "W6600": "v",
                 "A4000": "o",
                 "A100": "."
                 }
         linestyles = {
                 #'MI50': (3, 1.25, 3, 1.25, 1.25, 1.25),
-                'MI250': (3, 1.25, 3, 1.25, 1.25, 1.25),
+                'MI250X': (3, 1.25, 3, 1.25, 1.25, 1.25),
                 'W6600': (4, 1.5),
                 'A4000': "",
                 'A100': (1, 1)
