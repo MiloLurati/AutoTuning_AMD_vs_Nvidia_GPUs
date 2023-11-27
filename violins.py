@@ -10,11 +10,11 @@ def violins(kernel):
         performance = "GB/s"
     else:
         performance = "GFLOP/s"
-        
+
     devices = [
-        ("AMD Instinct MI50", f'cache_files/{kernel}_MI50.json'),
-        ("AMD Instinct MI250X", f'cache_files/{kernel}_MI250.json'),
+        #("AMD Instinct MI50", f'cache_files/{kernel}_MI50.json'),
         ("AMD Radeon PRO W6600", f'cache_files/{kernel}_W6600.json'),
+        ("AMD Instinct MI250X", f'cache_files/{kernel}_MI250X.json'),
         ("NVIDIA RTX A4000", f'cache_files/{kernel}_A4000.json'),
         ("NVIDIA A100-PCIE-40GB", f'cache_files/{kernel}_A100.json')
     ]
@@ -32,7 +32,7 @@ def violins(kernel):
             except KeyError:
                 pass
         max_value = max(perf_data)
-        min_value = min(perf_data)
+        min_value = 0 #min(perf_data)
         range_value = max_value - min_value
         normalized_perf_data = [(val - min_value) / range_value for val in perf_data]
         df_norm_perf = pd.DataFrame({performance: normalized_perf_data, 'Device': device})
@@ -47,7 +47,7 @@ def violins(kernel):
     font_size = 22
     sns.set(style='whitegrid')
     fig, ax = plt.subplots(figsize=(20, 6))
-    sns.violinplot(x='Device', y=performance, data=data_df, ax=ax)
+    sns.violinplot(x='Device', y=performance, data=data_df, ax=ax, density_norm='area', hue='Device', common_norm=True, bw_adjust=.5)
     ax.set_ylabel(f"Normalized {performance}", fontsize=font_size)
     ax.set_xlabel("Device", fontsize=font_size)
     if kernel == "dedisp":
