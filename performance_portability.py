@@ -15,8 +15,8 @@ def plot_portability(kernel):
 
     devices = [
         #("AMD Instinct MI50", f'cache_files/{kernel}_MI50.json'),
-        ("AMD Instinct MI250X", f'cache_files/{kernel}_MI250X.json'),
         ("AMD Radeon PRO W6600", f'cache_files/{kernel}_W6600.json'),
+        ("AMD Instinct MI250X", f'cache_files/{kernel}_MI250X.json'),
         ("NVIDIA RTX A4000", f'cache_files/{kernel}_A4000.json'),
         ("NVIDIA A100-PCIE-40GB", f'cache_files/{kernel}_A100.json')
     ]
