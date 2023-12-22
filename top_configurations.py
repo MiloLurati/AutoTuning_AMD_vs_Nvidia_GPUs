@@ -8,6 +8,7 @@ def print_top_configs(filename):
     tune_param_keys = data["tune_params_keys"]
     tune_params = data["tune_params"]
 
+    print(filename)
     print("keys:")
     for key in list(tune_param_keys):
         if len(tune_params[key]) > 1:
@@ -16,10 +17,11 @@ def print_top_configs(filename):
             tune_param_keys.remove(key)
 
     records = list(data["cache"].values())
-    records.sort(key=lambda p: p["time"])
+    records.sort(key=lambda p: p["time"] if isinstance(p["time"], float) else float("inf"))
 
     for record in records[:5]:
         print(" & ".join(str(record[key]) for key in tune_param_keys) + f" \\\\ % time: {record['time']}")
+    print()
 
 
 

@@ -66,9 +66,9 @@ def violins(kernel):
             y=performance,
             hue='Device',
             ax=ax,
-            density_norm='width',
-            #common_norm=True,
-            gap=0,
+            density_norm='area',
+            common_norm=True,
+            gap=-.4,
             bw_adjust=.3)
 
     ax.set_ylabel(f"Normalized {performance}") #, fontsize=font_size)
