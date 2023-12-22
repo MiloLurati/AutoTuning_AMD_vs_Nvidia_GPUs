@@ -34,11 +34,25 @@ def tune(inputs, device):
     tune_params["read_only"] = [0,1]    #toggle using the read-only cache
 
     tune_params["use_padding"] = [0,1]  #toggle the insertion of padding in shared memory
+    tune_params["use_shmem"] = [0, 1]
+    tune_params["use_cmem"]= [1]
 
-    #limit the search to only use padding when its effective
-    restrict = ["(use_padding==0 or (block_size_x % 32 != 0))", "((block_size_x*tile_size_x+4)*(block_size_y*tile_size_y+4) < 12*1024)"]
-    restrict.append("(((block_size_x*tile_size_x+%d)*(block_size_y*tile_size_y+%d)) < 12*1024)" % (filter_width-1, filter_height-1))
-    restrict.append("block_size_x * block_size_y <= 1024")
+    tune_params["filter_height"] = [filter_height]
+    tune_params["filter_width"] = [filter_width]
+
+    restrict = [
+            # Limit total number of threads per block
+            "block_size_x * block_size_y <= 1024",
+
+            #limit the search to only use padding when its effective
+            "use_padding==0 or block_size_x % 32 != 0",
+
+            # Only use padding if shared memory is enabled
+            "use_padding==0 or use_shmem != 0",
+
+            # Limit total amount of shared memory used when it is used
+            "use_shmem == 0 or ((block_size_x*tile_size_x+%d)*(block_size_y*tile_size_y+%d)) < 12*1024" % (filter_width-1, filter_height-1),
+    ]
 
     problem_size = (image_width, image_height)
     size = numpy.prod(problem_size)
@@ -73,11 +87,11 @@ def tune(inputs, device):
     env_file = open(f"convolution_{device}_env.json", "w")
     json.dump(env, env_file, indent = 6)
     env_file.close()
-    
+
     # Store the metadata of this run
     store_metadata_file(f'convolution_{device}_metadata.json')
-    
-   
+
+
 if __name__ == "__main__":
 
     arg1 = sys.argv[1]
