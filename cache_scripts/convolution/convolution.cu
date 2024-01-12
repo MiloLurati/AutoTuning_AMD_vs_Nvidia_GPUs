@@ -75,6 +75,7 @@ __global__ void convolution_kernel(float *output, float *input, float *filter) {
     int by = blockIdx.y * block_size_y * tile_size_y;
     int bx = blockIdx.x * block_size_x * tile_size_x;
 
+#if use_shmem
     //shared memory to hold all input data need by this thread block
     __shared__ float sh_input[block_size_y*tile_size_y+border_height][shared_mem_width];
 
@@ -83,18 +84,18 @@ __global__ void convolution_kernel(float *output, float *input, float *filter) {
     for (int i=ty; i<i_end; i+=block_size_y) {
         #pragma unroll
         for (int j=tx; j<j_end; j+=block_size_x) {
-            #if ((image_height%(block_size_y*tile_size_y)!=0) || (image_width%(block_size_x*tile_size_x)!=0))
             int y = by+i;
             int x = bx+j;
-            if (y < input_height && x < input_width) {
-                sh_input[i][j] = LDG(input, y*input_width+x);
-            }
-            #else
-                sh_input[i][j] = LDG(input, (by+i)*input_width + (bx+j));
+            float value = 0.0f;
+            #if ((image_height%(block_size_y*tile_size_y)!=0) || (image_width%(block_size_x*tile_size_x)!=0))
+            if (y < input_height && x < input_width)
             #endif
+                value = LDG(input, y*input_width+x);
+            sh_input[i][j] = value;
         }
     }
     __syncthreads();
+#endif
 
     //thread-local registers to hold local sums
     float sum[tile_size_y][tile_size_x];
@@ -111,12 +112,31 @@ __global__ void convolution_kernel(float *output, float *input, float *filter) {
     for (int i=0; i < filter_height; i++) {
         #pragma unroll
         for (int j=0; j < filter_width; j++) {
-
             #pragma unroll
             for (int yi=0; yi<tile_size_y; yi++) {   
                 #pragma unroll
                 for (int xi=0; xi<tile_size_x; xi++) {
-                    sum[yi][xi] += sh_input[ty+yi*block_size_y+i][tx+xi*block_size_x+j] * d_filter[i*filter_width+j];
+
+#if use_cmem
+                    float filter_value = d_filter[i*filter_width+j];
+#else
+                    float filter_value = filter[i*filter_width+j];
+#endif
+
+#if use_shmem
+                    float input_value = sh_input[ty+yi*block_size_y+i][tx+xi*block_size_x+j];
+#else
+                    int x = bx+tx+xi*block_size_x+j;
+                    int y = by+ty+yi*block_size_y+i;
+                    float input_value = 0.0f;
+
+                    #if ((image_height%(block_size_y*tile_size_y)!=0) || (image_width%(block_size_x*tile_size_x)!=0))
+                    if (by+ty+yi*block_size_y < input_height && bx+tx+xi*block_size_x < input_width)
+                    #endif
+                        input_value = LDG(input, y*input_width+x);
+
+#endif
+                    sum[yi][xi] += input_value * filter_value;
                 }
             }
 
@@ -128,18 +148,14 @@ __global__ void convolution_kernel(float *output, float *input, float *filter) {
     for (int yi=0; yi<tile_size_y; yi++) {   
         #pragma unroll
         for (int xi=0; xi<tile_size_x; xi++) {
-            #if ((image_height%(block_size_y*tile_size_y)!=0) || (image_width%(block_size_x*tile_size_x)!=0))
             int y = by+ty+yi*block_size_y;
             int x = bx+tx+xi*block_size_x;
-            if (y < image_height && x < image_width) {
-                output[y * image_width + x] = sum[yi][xi];
-            }
-            #else
-                output[(by+ty+yi*block_size_y) * image_width + bx+tx+xi*block_size_x] = sum[yi][xi];
+            #if ((image_height%(block_size_y*tile_size_y)!=0) || (image_width%(block_size_x*tile_size_x)!=0))
+            if (y < image_height && x < image_width) 
             #endif
+                output[y * image_width + x] = sum[yi][xi];
         }
     }
-
 }
 
 

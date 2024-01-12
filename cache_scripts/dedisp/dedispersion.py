@@ -115,7 +115,7 @@ if __name__ == "__main__":
 
     arg1 = sys.argv[1]
 
-    if arg1 not in ('a100', 'a4000', "w6600", "mi50"):
+    if arg1 not in ('a100', 'a4000', "w6600", "mi50", "mi250"):
         print("wrong argument")
         exit()
 

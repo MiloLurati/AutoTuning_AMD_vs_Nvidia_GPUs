@@ -192,6 +192,8 @@ def tune(device):
 
     cache_file = f"hotspot_{device}_cache.json"
 
+    lang = "HIP"
+
     # call the tuner
     results, env = kt.tune_kernel("calculate_temp", kernel_file, problem_size, args, tune_params, iterations=32,
                                   metrics=metrics, grid_div_x=grid_div_x, grid_div_y=grid_div_y, cache=cache_file,
@@ -209,7 +211,7 @@ def tune(device):
 
 if __name__ == "__main__":
     arg1 = sys.argv[1]
-    if arg1 not in ("a100", "a4000", "mi50", "w6600"):
-        print("argv[1] not valid, specify a100 or a4000 or mi50 or w6600")
+    if arg1 not in ("a100", "a4000", "mi50", "w6600", "mi250"):
+        print("argv[1] not valid, specify a100 or a4000 or mi50 or w6600 or mi250")
         exit()
     tune(arg1)
