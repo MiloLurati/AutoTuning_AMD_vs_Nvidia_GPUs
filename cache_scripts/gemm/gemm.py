@@ -138,7 +138,7 @@ def tune(inputs, device, searchspace_set=2):
     print(f"Starting tuning, {filename=}")
     start = time.time()
     results, env = kernel_tuner.tune_kernel("Xgemm", kernel_string, problem_size, args, tune_params, block_size_names=block_size_names,
-                             restrictions=restrict, verbose=False, compiler_options=["-I"+path], lang="CUDA",
+                             restrictions=restrict, verbose=False, compiler_options=["-I"+path], lang="HIP",
                              grid_div_x=grid_div_x, grid_div_y=grid_div_y,
                              device=0, platform=0, iterations=32, metrics=metrics,
                              cache=filename + "_cache.json", simulation_mode=False)

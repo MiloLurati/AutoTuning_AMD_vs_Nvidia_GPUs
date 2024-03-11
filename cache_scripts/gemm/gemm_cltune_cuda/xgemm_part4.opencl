@@ -19,11 +19,6 @@
 #if defined(ROUTINE_SYRK) || defined(ROUTINE_HERK) || defined(ROUTINE_SYR2K) || defined(ROUTINE_HER2K)
 
 // Main entry point of the kernel. This is the upper-triangular version.
-#if RELAX_WORKGROUP_SIZE == 1
-  __kernel
-#else
-  __kernel __attribute__((reqd_work_group_size(MDIMC, NDIMC, 1)))
-#endif
 void XgemmUpper(const int kSizeN, const int kSizeK,
                 const real_arg arg_alpha,
                 const real_arg arg_beta,
@@ -59,11 +54,6 @@ void XgemmUpper(const int kSizeN, const int kSizeK,
 }
 
 // Main entry point of the kernel. This is the lower-triangular version.
-#if RELAX_WORKGROUP_SIZE == 1
-  __kernel
-#else
-  __kernel __attribute__((reqd_work_group_size(MDIMC, NDIMC, 1)))
-#endif
 void XgemmLower(const int kSizeN, const int kSizeK,
                 const real_arg arg_alpha,
                 const real_arg arg_beta,
@@ -103,12 +93,7 @@ void XgemmLower(const int kSizeN, const int kSizeK,
 #else
 
 // Main entry point of the kernel. This is the regular full version.
-#if RELAX_WORKGROUP_SIZE == 1
-  __kernel
-#else
-  __kernel __attribute__((reqd_work_group_size(MDIMC, NDIMC, 1)))
-#endif
-void Xgemm(const int kSizeM, const int kSizeN, const int kSizeK,
+__global__ void Xgemm(const int kSizeM, const int kSizeN, const int kSizeK,
            const real_arg arg_alpha,
            const real_arg arg_beta,
            const __global realM* restrict agm,
