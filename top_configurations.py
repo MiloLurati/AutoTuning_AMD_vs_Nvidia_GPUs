@@ -16,11 +16,21 @@ def print_top_configs(filename):
         else:
             tune_param_keys.remove(key)
 
+    if "dedisp" in data["kernel_name"]:
+        performance = "GB/s"
+    else:
+        performance = "GFLOP/s"
+
     records = list(data["cache"].values())
-    records.sort(key=lambda p: p["time"] if isinstance(p["time"], float) else float("inf"))
+    records.sort(key=lambda p: -p[performance] if isinstance(p.get(performance), float) else float("inf"))
 
     for record in records[:5]:
-        print(" & ".join(str(record[key]) for key in tune_param_keys) + f" \\\\ % time: {record['time']}")
+        line = " & ".join(str(record[key]) for key in tune_param_keys)
+        #line += f" \\\\ % time: {record['time']}"
+        line += f" & {record[performance]:.2f} \\\\ %"
+        while len(line) < 40: line += ' '
+        line += f"time: {record['time']}"
+        print(line)
     print()
 
 
