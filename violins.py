@@ -50,7 +50,8 @@ def violins(kernel):
     statistics_df = perf_data_df.groupby('Device', sort=False).describe()
     statistics_df = statistics_df.round(2)
     statistics_df[performance,"normalized 50%"] = statistics_df[performance,'50%'] / statistics_df[performance,'max']
-    statistics_df[performance,"normalized median"] = statistics_df[performance,'mean'] / statistics_df[performance,'max']
+    statistics_df[performance,"normalized mean"] = statistics_df[performance,'mean'] / statistics_df[performance,'max']
+    statistics_df[performance,"speedup"] = 1 / statistics_df[performance,"normalized 50%"]
     print(statistics_df)
 
     font_size = 22
@@ -58,7 +59,8 @@ def violins(kernel):
     #sns.set_context("paper", rc={"font.size":10,"axes.titlesize":7,"axes.labelsize":12})
     sns.set(font_scale = 1)
 
-    fig, ax = plt.subplots(figsize=(9, 3))
+    scale = 0.75
+    fig, ax = plt.subplots(figsize=(9 * scale, 4 * scale))
 
     sns.violinplot(
             data=data_df,
@@ -72,7 +74,7 @@ def violins(kernel):
             bw_adjust=.3)
 
     ax.set_ylabel(f"Normalized {performance}") #, fontsize=font_size)
-    ax.set_xlabel("") #, fontsize=font_size)
+    ax.set_xlabel(" ") #, fontsize=font_size)
     if kernel == "dedisp":
         ax.set_title('Dedispersion Tuning Search Space') #, fontsize=font_size)
     else:

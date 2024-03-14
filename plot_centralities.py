@@ -56,7 +56,9 @@ def plot_centrality(plotdf, kernel, order):
         palette = sns.color_palette()
         group = 'GPU'
 
-    fig, ax = plt.subplots(figsize=(9, 4))
+    scale = 0.75
+    fig, ax = plt.subplots(figsize=(9 * scale, 4 * scale))
+
     g = sns.lineplot(
             data=plotdf,
             y='Prop_centrality',
