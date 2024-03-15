@@ -4,3 +4,5 @@ processed_cache_files/hotspot_MI250X_processed.json filter=lfs diff=lfs merge=lf
 cache_files/hotspot_W6600.json filter=lfs diff=lfs merge=lfs -text
 cache_files/hotspot_MI50.json filter=lfs diff=lfs merge=lfs -text
 cache_files/hotspot_MI250X.json filter=lfs diff=lfs merge=lfs -text
+cache_files/gemm_MI250X.json filter=lfs diff=lfs merge=lfs -text
+processed_cache_files/gemm_MI250X_processed.json filter=lfs diff=lfs merge=lfs -text
