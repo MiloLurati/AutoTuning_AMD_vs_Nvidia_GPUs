@@ -116,7 +116,7 @@ def plot():
 
     results = []
 
-    for kernel in ("convolution", "hotspot", "dedisp"):
+    for kernel in ("convolution", "hotspot", "dedisp", "gemm"):
         print(f"Plotting {kernel} centralities")
         file_dir = experiment_dir
         exper_files = [f for f in os.listdir(file_dir) if os.path.isfile(os.path.join(file_dir, f))]
