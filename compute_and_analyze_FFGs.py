@@ -28,7 +28,7 @@ def compute_and_analyze():
     #data_path = '/var/scratch/mli940/'
 
     convolution_files = [
-        'convolution_MI50_processed.json',
+        #'convolution_MI50_processed.json',
         'convolution_MI250X_processed.json',
         'convolution_W6600_processed.json',
         'convolution_A4000_processed.json',
@@ -36,7 +36,7 @@ def compute_and_analyze():
     ]
 
     hotspot_files = [
-        'hotspot_MI50_processed.json',
+        #'hotspot_MI50_processed.json',
         'hotspot_MI250X_processed.json',
         'hotspot_W6600_processed.json',
         'hotspot_A4000_processed.json',
@@ -44,14 +44,22 @@ def compute_and_analyze():
     ]
 
     dedisp_files = [
-        'dedisp_MI50_processed.json',
+        #'dedisp_MI50_processed.json',
         'dedisp_MI250X_processed.json',
         'dedisp_W6600_processed.json',
         'dedisp_A4000_processed.json',
         'dedisp_A100_processed.json'
     ]
 
-    for files in (convolution_files, hotspot_files, dedisp_files):
+    gemm_files = [
+        #'gemm_MI50_processed.json',
+        'gemm_MI250X_processed.json',
+        'gemm_W6600_processed.json',
+        'gemm_A4000_processed.json',
+        'gemm_A100_processed.json'
+    ]
+
+    for files in (gemm_files, convolution_files, hotspot_files, dedisp_files):
         for filename in files:
             print(f"Computing and analyzing {filename} FFG")
             with open(data_path + filename, 'r') as myfile:
@@ -81,20 +89,28 @@ def compute_and_analyze():
 
 
             ### Compute optimal fitness for reference
+            if "dedisp" in data["kernel_name"]:
+                performance = "GB/s"
+            else:
+                performance = "GFLOP/s"
+
             best_fit = 100000000
             bestkey = None
-            for k in data['cache'].keys():
-                runtimeFailedConfig = False
+            for k in list(data['cache'].keys()):
                 try:
-                    time = float(data['cache'][k]['time'])
-                except:
-                    runtimeFailedConfig = True
-                if runtimeFailedConfig:
-                    continue
-                if time < best_fit:
-                    best_fit = time
-                    bestkey = k
-            #print("Optimal settings in cache are:", bestkey, "with time {0:.4f}".format(best_fit))
+                    # HACK: bloopy assumse that we want to minimize "time", however, we
+                    # instead want to maximize "performance". To solve this, we
+                    # set the "time" column to "1/performance" as a 'workaround'.
+                    fake_time = 1 / float(data['cache'][k][performance])
+                    data['cache'][k]["time"] = fake_time
+
+                    if fake_time < best_fit:
+                        best_fit = fake_time
+                        bestkey = k
+                except e:
+                    print(e)
+                    pass
+            print("Optimal settings in cache are:", bestkey, "with time {0:.4f}".format(best_fit))
             print("There are", len(data['cache'].keys()), "keys in the searchspace")
 
             ###  <<<  ANALYZING SEARCH SPACES  >>>
