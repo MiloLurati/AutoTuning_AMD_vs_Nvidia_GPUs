@@ -3,10 +3,30 @@ import sys
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import matplotlib.cm
 import scipy
 import numpy as np
 
-def plot_portability(kernel):
+cmap = "inferno"
+
+def subplot_portability_data(rows, cbar=False):
+    xlabels = [
+        "W6600",
+        "MI250X",
+        "A4000",
+        "A100",
+    ]
+
+    ylabels = xlabels + [
+        "AMD",
+        "NVIDIA",
+        "All"
+    ]
+
+    sns.heatmap(rows, cmap=cmap, annot=True, yticklabels=ylabels, xticklabels=xlabels, vmin=0, cbar=cbar)
+    plt.xticks(rotation=0)
+
+def subplot_portability(kernel):
     print(f"Plotting {kernel} portability")
     if kernel == "dedisp":
         performance = "GB/s"
@@ -64,19 +84,6 @@ def plot_portability(kernel):
     df["score_amd"] = df[amd_devices].apply(scipy.stats.hmean, axis=1)
     df["score_nvidia"] = df[nvidia_devices].apply(scipy.stats.hmean, axis=1)
 
-    xlabels = [
-        "W6600",
-        "MI250X",
-        "A4000",
-        "A100",
-    ]
-
-    ylabels = xlabels + [
-        "AMD",
-        "NVIDIA",
-        "All"
-    ]
-
     configs = [
         np.argmax(df["AMD Radeon PRO W6600"]),
         np.argmax(df["AMD Instinct MI250X"]),
@@ -88,20 +95,62 @@ def plot_portability(kernel):
     ]
 
     print(df.iloc[configs])
+    print(df.iloc[configs][all_devices])
 
-    rows = [
+    rows = np.array([
         [df[device][config] for device in all_devices]
         for config in configs
-    ]
+    ])
 
 
-    plt.figure(figsize=(5, 4))
-    sns.heatmap(rows, cmap="inferno", annot=True, yticklabels=ylabels, xticklabels=xlabels, vmin=0)
-    plt.ylabel("Configuration with max. portability score for...")
+    subplot_portability_data(rows)
+    return rows
+
+
+
+
+def plot_portability():
+    scale = 0.75
+    plt.subplots(1, 4, figsize=(15 * scale, 4 * scale), sharey=True)
+
+    plt.subplot(141)
+    plt.title("Convolution")
+    data = subplot_portability("convolution")
     plt.xlabel("... applied to...")
+    plt.ylabel("Configuration with maximum\nperformance portability score for...")
+
+    plt.subplot(142)
+    plt.title("Hotspot")
+    data += subplot_portability("hotspot")
+    plt.xlabel("... applied to...")
+
+    plt.subplot(143)
+    plt.title("Dedispersion")
+    data += subplot_portability("dedisp")
+    plt.xlabel("... applied to...")
+
+    plt.subplot(144)
+    plt.title("GEMM")
+    data += subplot_portability("gemm")
+    plt.xlabel("... applied to...")
+
+    #plt.subplot(155)
+    #norm =  matplotlib.colors.Normalize(0, 1)
+    #plt.gcf().colorbar(matplotlib.cm.ScalarMappable(norm=norm, cmap=cmap), cax=plt.gca())
+
     plt.tight_layout()
-    plt.savefig(f"plots/portability_{kernel}.eps")
+    plt.savefig(f"plots/portability.eps")
+
+    avg = data / 4
+    plt.figure(figsize=(6 * scale, 4 * scale))
+    plt.title("Average")
+    subplot_portability_data(avg, cbar=True)
+    plt.xlabel("... applied to...")
+    plt.ylabel("Configuration with maximum\nperformance portability score for...")
+
+    plt.tight_layout()
+    plt.savefig(f"plots/portability_avg.eps")
+
 
 if __name__ == "__main__":
-    arg1 = sys.argv[1]
-    plot_portability(arg1)
+    plot_portability()
