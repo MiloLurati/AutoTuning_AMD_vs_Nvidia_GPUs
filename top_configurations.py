@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import json
 import sys
 import os
@@ -14,8 +15,6 @@ def print_top_configs(kernel_name):
 
         print(r"\begin{minipage}{0.249\columnwidth}\scriptsize\centering")
         print(dev + r" \\")
-        print(r"""\begin{tabular}{lllllll}
-\midrule""")
 
         with open(filename) as f:
             data = json.load(f)
@@ -32,6 +31,12 @@ def print_top_configs(kernel_name):
                 #print(f" - {key}: {tune_params[key]}")
             else:
                 tune_param_keys.remove(key)
+
+        num_cols = len(tune_param_keys)+1
+        col_str = 'r' * (len(tune_param_keys)+1)
+        print(r"""\begin{tabular}{""" + col_str + """}
+\midrule""")
+
 
         #filter out invalid configs
         records = [record for record in list(data["cache"].values()) if isinstance(record[objective], float)]
