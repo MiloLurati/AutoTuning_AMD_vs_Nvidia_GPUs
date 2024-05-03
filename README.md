@@ -1,4 +1,4 @@
-# Data and Plotting scripts for "Comparing the Impact & Difficulty of Auto-Tuning on AMD and Nvidia GPUs"
+# Data and Plotting scripts for "Bringing auto-tuning to HIP: Analysis of tuning impact and difficulty on AMD and Nvidia GPUs"
 
 This repository contains the cached GPU tuning data, the Python plotting scripts, and the kernels and kernel scripts for the paper "Bringing auto-tuning to HIP: Analysis of tuning impact and difficulty on AMD and Nvidia GPUs" byMilo Lurati, Stijn Heldens, Alessio Sclocco and Ben van Werkhoven.
 
