@@ -69,3 +69,4 @@ if __name__ == "__main__":
     else:
         print("Usage: python top_configurations.py [kernel_name]")
         print("  kernel_name options:", ", ".join(kernels))
+

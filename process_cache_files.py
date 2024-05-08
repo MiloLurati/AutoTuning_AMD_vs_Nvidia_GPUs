@@ -15,7 +15,7 @@ def process():
 
     convolution_files = [
         'convolution_MI250X.json',
-        'convolution_MI50.json',
+        #'convolution_MI50.json',
         'convolution_W6600.json',
         'convolution_A4000.json',
         'convolution_A100.json'
@@ -23,7 +23,7 @@ def process():
 
     hotspot_files = [
         'hotspot_MI250X.json',
-        'hotspot_MI50.json',
+        #'hotspot_MI50.json',
         'hotspot_W6600.json',
         'hotspot_A4000.json',
         'hotspot_A100.json'
@@ -31,13 +31,22 @@ def process():
 
     dedisp_files = [
         'dedisp_MI250X.json',
-        'dedisp_MI50.json',
+        #'dedisp_MI50.json',
         'dedisp_W6600.json',
         'dedisp_A4000.json',
         'dedisp_A100.json'
     ]
 
-    for files in (convolution_files, hotspot_files, dedisp_files):
+    gemm_files = [
+        'gemm_MI250X.json',
+        'gemm_W6600.json',
+        'gemm_A4000.json',
+        'gemm_A100.json'
+    ]
+
+    all_files = (gemm_files, convolution_files, hotspot_files, dedisp_files)
+
+    for files in all_files:
         for filename in files:
             print(f"Processing {filename}")
             with open(data_path + filename, 'r') as myfile:

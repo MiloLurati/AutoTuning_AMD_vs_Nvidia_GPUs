@@ -56,7 +56,9 @@ def plot_centrality(plotdf, kernel, order):
         palette = sns.color_palette()
         group = 'GPU'
 
-    fig, ax = plt.subplots(figsize=(9, 4))
+    scale = 0.75
+    fig, ax = plt.subplots(figsize=(9 * scale, 4 * scale))
+
     g = sns.lineplot(
             data=plotdf,
             y='Prop_centrality',
@@ -114,7 +116,7 @@ def plot():
 
     results = []
 
-    for kernel in ("convolution", "hotspot", "dedisp"):
+    for kernel in ("convolution", "hotspot", "dedisp", "gemm"):
         print(f"Plotting {kernel} centralities")
         file_dir = experiment_dir
         exper_files = [f for f in os.listdir(file_dir) if os.path.isfile(os.path.join(file_dir, f))]
