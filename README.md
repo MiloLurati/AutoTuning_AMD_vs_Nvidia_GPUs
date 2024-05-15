@@ -18,6 +18,12 @@ To re-create the plots requires the seaborn package.
 pip install seaborn
 ```
 
+lastly we need to install networkx.
+
+```
+pip install networkx
+```
+
 To re-create the cache files you will need [Kernel Tuner](https://kerneltuner.github.io/kernel_tuner/stable/) with [HIP](https://docs.amd.com/projects/HIP/en/docs-5.3.0/how_to_guides/install.html).
 
 ## Running the experiments
@@ -55,4 +61,17 @@ To plot the violins and calculate the statistical values run:
 python violins.py <kernel name>
 ```
 
-Give kernel name as argument (convolution, hotspot, dedisp). For example ```python violins.py convolution```.
+Give kernel name as argument (convolution, hotspot, dedisp, gemm). For example ```python violins.py convolution```.
+
+## Plot Performance Portability
+
+```
+python performance_portability.py
+```
+
+## Calculate Top Configurations
+
+```
+python top_configurations.py <kernel name>
+```
+Give kernel name as argument (convolution, hotspot, dedisp, gemm).

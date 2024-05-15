@@ -108,10 +108,10 @@ def plot_centrality(plotdf, kernel, order):
 
 def plot():
     ### Get the files
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    root_dir = "/".join(current_dir.split('/')[:-1]) + "/"
-    pth = 'AutoTuning_AMD_vs_Nvidia_GPUs/FFG_data/'
-    experiment_dir = root_dir + pth #+ 'bounded_pagerank_centrality/'
+    current_dir = os.path.dirname(os.path.abspath(__file__)) 
+    root_dir = os.path.join(current_dir, os.pardir) 
+    pth = os.path.join('AutoTuning_AMD_vs_Nvidia_GPUs', 'FFG_data')
+    experiment_dir = os.path.normpath(os.path.join(root_dir, pth))
     GPUs = ["W6600", "MI250X", "A4000", "A100"]
 
     results = []
@@ -142,7 +142,8 @@ def plot():
                 raise Exception("Something wrong")
 
             # Open the file
-            with open(file_dir + f, 'r') as read_obj:
+            file_path = os.path.join(file_dir, f)
+            with open(file_path, 'r') as read_obj:
                 csv_reader = csv.reader(read_obj)
                 list_data = list(csv_reader)[1:]
             for dat in list_data:
