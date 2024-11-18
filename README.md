@@ -75,3 +75,16 @@ python performance_portability.py
 python top_configurations.py <kernel name>
 ```
 Give kernel name as argument (convolution, hotspot, dedisp, gemm).
+
+## Citation
+
+```latex
+@inproceedings{lurati2024bringing,
+  title={Bringing Auto-Tuning to HIP: Analysis of Tuning Impact and Difficulty on AMD and Nvidia GPUs},
+  author={Lurati, Milo and Heldens, Stijn and Sclocco, Alessio and van Werkhoven, Ben},
+  booktitle={European Conference on Parallel Processing},
+  pages={91--106},
+  year={2024},
+  organization={Springer}
+}
+```
